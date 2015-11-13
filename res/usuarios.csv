@@ -1,0 +1,6 @@
+key;name;last_name;dni;subscriber;address;credit
+1;Alvaro;Roizo;12131231t;TRUE ;calle oriente;10
+2;Manu;Morales;12312312j;FALSE;calle madrid;5
+3;Miguel;Garcia;54353453f;TRUE ;calle toledo;3
+4;Jose;Camacho;52352352a;TRUE ;calle francia;15
+5;Ivan;Sanchez;45345234q;TRUE ;calle limones;12

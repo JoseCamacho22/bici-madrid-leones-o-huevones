@@ -4,7 +4,7 @@ import java.nio.file.Path;
 
 public interface InterfaceRandomUser {
 	
-    
+   
 	
 	void loadUserCSV(Path csvUserFile, Path userRandomFile);
 
