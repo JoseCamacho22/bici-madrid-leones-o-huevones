@@ -16,7 +16,7 @@ public class Bike_Random implements InterfaceRandomBike {
 	final static int MAX_BIKES = 500; // dos int y dos boolean
 
 	public void loadBikeCSV(Path bikeRandomFile) {
-		Path path = Paths.get("res/bike.csv");
+		Path path = Paths.get("res/bike.csv");//
 		loadBikeCSV(path, bikeRandomFile);
 	}
 
