@@ -86,7 +86,7 @@ public class User implements Serializable{
     
 	@Override
 	public String toString() {
-		return "User [key=" + key + ", name=" + name + ", lastname= " + last_name + ", dni= " + dni + " subscriber= " 
-	+subscriber+ " address= " +address+ " credit= " +credit+"]";
+		return "User [key=" + key + ", name=" + name.replaceAll("\\s+", " ").trim() + ", lastname= " + last_name.replaceAll("\\s+", " ").trim() + ", dni= " + dni + ", subscriber= " 
+	+subscriber+ ", address= " +address.replaceAll("\\s+", " ").trim()+ ", credit= " +credit+".]";
 	}
 }

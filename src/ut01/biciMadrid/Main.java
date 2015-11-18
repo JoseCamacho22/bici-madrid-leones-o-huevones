@@ -1,5 +1,6 @@
 package ut01.biciMadrid;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -33,12 +34,12 @@ public class Main {
 */
 	public static void main(String[] args) {
 		AleatorioUser aleatorio = new AleatorioUser();
-		aleatorio.loadUserCSV(Paths.get("res/usuarios.csv"),
-				Paths.get("res/usuarios.bin"));
+		aleatorio.loadUserCSV(Paths.get("res/users.bin"));
 		
-		ArrayList<User> users = aleatorio.getAllUsers(Paths.get("res/usuarios.bin"));
-		//User usuario = new User(7, "Fulanito", "Apellido","12345678q", true, "calle de prueba", 10);
-		//aleatorio.writeUserRecord(raf, user);
+		
+		/*User usuario = new User(999, "Fulanito", "Apellido","12345678q", true, "calle de prueba", 10);
+		aleatorio.saveUser(usuario, Paths.get("res/users.bin"));*/
+		ArrayList<User> users = aleatorio.getAllUsers(Paths.get("res/users.bin"));
 		for(User user:users){
 			System.out.println(user);
 		}

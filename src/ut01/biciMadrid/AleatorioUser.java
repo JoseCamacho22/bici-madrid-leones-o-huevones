@@ -29,7 +29,7 @@ public class AleatorioUser implements InterfaceRandomUser {
 	
 	
 	public void loadUserCSV(Path userRandomFile) {
-		Path path = Paths.get("res/usuarios.csv");
+		Path path = Paths.get("res/users.csv");
 		loadUserCSV(path, userRandomFile);
 	}
 
@@ -94,6 +94,10 @@ public class AleatorioUser implements InterfaceRandomUser {
 		}
 	}
 	
+	public void writeUserRecord(User user, Path userRandomFile) throws IOException{
+		RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "rw");
+		writeUserRecord(raf, user);
+	}		
 	public void writeUserRecord(RandomAccessFile raf, User user) throws IOException {
 		// TODO Auto-generated method stub
 			raf.writeInt(user.getKey());//escribimos key
@@ -209,17 +213,17 @@ public class AleatorioUser implements InterfaceRandomUser {
 				
 				User user = new User(key, nameS, lastnameS, dniS, subscrib, addressS, credit);
 				users.add(user);
-				System.out.println("raf.getFilePointer()= "+raf.getFilePointer()+" raf.length()= "+raf.length());
+				//System.out.println("raf.getFilePointer()= "+raf.getFilePointer()+" raf.length()= "+raf.length());
 			}
 			
-			while (raf.getFilePointer() < 954);
+			while (raf.getFilePointer() < raf.length());
 			
 
 		} catch (FileNotFoundException e) {
 			System.err.format("No encuentra el fichero %s", userRandomFile.getFileName());
 
 		} catch (IOException e) {
-			System.err.format("Error I/O al leer el aleatorio de bicis");
+			System.err.format("Error I/O al leer el aleatorio de usuarios");
 
 		}
 
