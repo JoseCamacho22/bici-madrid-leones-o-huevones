@@ -14,6 +14,18 @@ public class Bike implements Serializable{
     Bike(){
     	
     }
+    
+    
+    
+	public Bike(int key, boolean activa, boolean alquilada, int totemKey) {
+		this.key = key;
+		this.activa = activa;
+		this.alquilada = alquilada;
+		this.totemKey = totemKey;
+	}
+
+
+
 	public int getKey() {
 		return key;
 	}
@@ -38,10 +50,15 @@ public class Bike implements Serializable{
 	public void setTotem(int totemKey) {
 		this.totemKey = totemKey;
 	}
+
+
+
+	@Override
+	public String toString() {
+		return "Bike [key=" + key + ", activa=" + activa + ", alquilada=" + alquilada + ", totemKey=" + totemKey + "]";
+	}
 	
 
-    
-    
     
   
 }

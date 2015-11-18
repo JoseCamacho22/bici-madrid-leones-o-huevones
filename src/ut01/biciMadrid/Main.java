@@ -1,5 +1,8 @@
 package ut01.biciMadrid;
 
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
 public class Main {
 	/*
 	 Desarrollar un programa para la gestión del programa de alquiler de bicis de Madrid.
@@ -30,6 +33,16 @@ public class Main {
 */
 	public static void main(String[] args) {
 		
+		
+		Bike_Random bike_Random = new Bike_Random ();
+		bike_Random.loadBikeCSV(Paths.get("res/bike.csv"),
+				Paths.get("res/bike.bin"));
+		
+		ArrayList<Bike> bicis = bike_Random.getAllBikes(Paths.get("res/bike.bin"));
+		
+		for(Bike bici:bicis){
+			System.out.println(bici);
 	}
 
+}
 }
