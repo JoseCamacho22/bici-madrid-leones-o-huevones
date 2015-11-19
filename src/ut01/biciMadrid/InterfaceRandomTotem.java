@@ -4,6 +4,7 @@ import java.nio.file.Path;
 
 public interface InterfaceRandomTotem {
 
+	
 	void loadTotemCSV(Path csvTotemFile, Path TotemRandomFile);
 
 	public Totem getTotem(int key, Path TotemRandomFile);
@@ -15,5 +16,7 @@ public interface InterfaceRandomTotem {
 	public Totem modifyTotem(Totem bici, Path TotemRandomFile);
 
 	public java.util.ArrayList<Totem> getAllTotems(Path TotemRandomFile);
+	
+	
 
 }
