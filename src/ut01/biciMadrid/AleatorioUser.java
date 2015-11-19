@@ -66,9 +66,16 @@ public class AleatorioUser implements InterfaceRandomUser {
 	}
 
 	
+	public User getUser(String dni) {
+		Path path = Paths.get("res/users.csv");
+		return getUser(dni, path);
+	}
+
+	
 	@Override
 	public User getUser(String dni, Path userRandomFile) {
 		// TODO Auto-generated method stub
+
 		return null;
 	}
 
@@ -94,10 +101,7 @@ public class AleatorioUser implements InterfaceRandomUser {
 		}
 	}
 	
-	public void writeUserRecord(User user, Path userRandomFile) throws IOException{
-		RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "rw");
-		writeUserRecord(raf, user);
-	}		
+		
 	public void writeUserRecord(RandomAccessFile raf, User user) throws IOException {
 		// TODO Auto-generated method stub
 			raf.writeInt(user.getKey());//escribimos key
@@ -123,12 +127,28 @@ public class AleatorioUser implements InterfaceRandomUser {
 			raf.writeDouble(user.getCredit());//escribimos credit
 		
 	}
-
+	public void deleteUser(int key) {
+		Path path = Paths.get("res/users.bin");
+		deleteUser(key, path);
+		
+	}
 	
-	@Override
-	public User deleteUser(String dni, Path userRandomFile) {
-		// TODO Auto-generated method stub
-		return null;
+	public void deleteUser(int key, Path userRandomFile) {
+		
+		try (RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "rw")) {
+		int position = (key - 1) * RECORD_USER;
+		raf.seek(position);
+		User userVacio = new User(0,"","","",false,"",0);
+		writeUserRecord(raf, userVacio);
+		
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.err.println("FileNotFound");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.err.println("No puedes borrar esa linea");
+		}
+		
 	}
 
 	@Override
@@ -148,9 +168,9 @@ public class AleatorioUser implements InterfaceRandomUser {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
-	public ArrayList<User> getAllUsers(Path userRandomFile) {
+	public ArrayList<User> getAllUsers(Path userRandomFile){
 		// TODO Auto-generated method stub
 		ArrayList<User> users = new ArrayList<>();
 		int key;
@@ -158,6 +178,7 @@ public class AleatorioUser implements InterfaceRandomUser {
 		double credit;
 		char name[] = new char[TAM_NAME], auxName, lastname[]= new char[TAM_LAST_NAME], auxLastName, dni[]=new char[TAM_DNI]
 				, auxDni, address[] = new char[TAM_ADDRESS], auxAddress;
+		
 		
 		try (RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "r")) {
 			do{
@@ -213,6 +234,7 @@ public class AleatorioUser implements InterfaceRandomUser {
 				
 				User user = new User(key, nameS, lastnameS, dniS, subscrib, addressS, credit);
 				users.add(user);
+				
 				//System.out.println("raf.getFilePointer()= "+raf.getFilePointer()+" raf.length()= "+raf.length());
 			}
 			
@@ -226,8 +248,7 @@ public class AleatorioUser implements InterfaceRandomUser {
 			System.err.format("Error I/O al leer el aleatorio de usuarios");
 
 		}
-
 		return users;
-	}
-
+	};
+	
 }

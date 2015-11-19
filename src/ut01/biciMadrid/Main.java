@@ -1,6 +1,8 @@
 package ut01.biciMadrid;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -39,6 +41,27 @@ public class Main {
 		
 		/*User usuario = new User(999, "Fulanito", "Apellido","12345678q", true, "calle de prueba", 10);
 		aleatorio.saveUser(usuario, Paths.get("res/users.bin"));*/
+		
+		//User userDni = aleatorio.getUser(Paths.get("res/users.bin"), "12131231t");
+		
+		//System.out.println(userDni);
+		//ArrayList<User> users = aleatorio.getAllUsers(userRandomFile)(Paths.get("res/users.bin"), "12131231t");
+		/*try (RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "rw")) {
+			int position = (1 - 1) * 191;
+			raf.seek(position);
+			User userVacio = new User(8,"","","",false,"",0);
+			System.out.println("prueba");
+			saveUser(userVacio, userRandomFile);
+			
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				System.err.println("error2");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.err.println("error1");
+	}
+		*/
+		aleatorio.deleteUser(5);
 		ArrayList<User> users = aleatorio.getAllUsers(Paths.get("res/users.bin"));
 		for(User user:users){
 			System.out.println(user);

@@ -13,7 +13,7 @@ public interface InterfaceRandomUser {
 	
 	public void saveUser(User user, Path userRandomFile);
 	
-	public User deleteUser(String dni, Path userRandomFile);
+	public void deleteUser(int key, Path userRandomFile);
 
 	public User modifyUser(String dni, Path userRandomFile);
 	
