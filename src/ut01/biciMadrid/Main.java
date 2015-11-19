@@ -36,9 +36,8 @@ public class Main {
 */
 	public static void main(String[] args) {
 		AleatorioUser aleatorio = new AleatorioUser();
-		aleatorio.loadUserCSV(Paths.get("res/users.bin"));
 		
-		
+		//aleatorio.loadUserCSV(Paths.get("res/users.bin"));
 		/*User usuario = new User(999, "Fulanito", "Apellido","12345678q", true, "calle de prueba", 10);
 		aleatorio.saveUser(usuario, Paths.get("res/users.bin"));*/
 		
@@ -61,7 +60,7 @@ public class Main {
 				System.err.println("error1");
 	}
 		*/
-		aleatorio.deleteUser(5);
+		aleatorio.deleteUser(3);
 		ArrayList<User> users = aleatorio.getAllUsers(Paths.get("res/users.bin"));
 		for(User user:users){
 			System.out.println(user);
