@@ -1,5 +1,7 @@
 package ut01.biciMadrid;
 
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.file.Path;
 
 public interface InterfaceRandomUser {
@@ -8,18 +10,17 @@ public interface InterfaceRandomUser {
 	
 	void loadUserCSV(Path csvUserFile, Path userRandomFile);
 
-
-    public  User getUser(String dni, Path userRandomFile);
+    public  User getUser(int key, Path userRandomeFile, RandomAccessFile raf ) throws IOException;
 	
 	public void saveUser(User user, Path userRandomFile);
 	
 	public void deleteUser(int key, Path userRandomFile);
 
-	public User modifyUser(String dni, Path userRandomFile);
+	public void modifyUser(User user, Path userRandomFile);
 	
-	public User addCredit(String dni, double credit, Path userRandomFile);
+	public void addCredit(int key, double credit, Path userRandomFile);
 
-	public User removeCredit(String dni, double credit, Path userRandomFile);
+	public void removeCredit(int key, double credit, Path userRandomFile);
 
 	
 	

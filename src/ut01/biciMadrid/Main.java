@@ -38,8 +38,9 @@ public class Main {
 		AleatorioUser aleatorio = new AleatorioUser();
 		
 		//aleatorio.loadUserCSV(Paths.get("res/users.bin"));
-		/*User usuario = new User(999, "Fulanito", "Apellido","12345678q", true, "calle de prueba", 10);
-		aleatorio.saveUser(usuario, Paths.get("res/users.bin"));*/
+		User usuario = new User(7, "Fulanito2", "Apellido","12345678q", true, "calle de prueba", 10);
+		
+		//aleatorio.saveUser(usuario, Paths.get("res/users.bin"));
 		
 		//User userDni = aleatorio.getUser(Paths.get("res/users.bin"), "12131231t");
 		
@@ -60,11 +61,15 @@ public class Main {
 				System.err.println("error1");
 	}
 		*/
-		aleatorio.deleteUser(3);
-		ArrayList<User> users = aleatorio.getAllUsers(Paths.get("res/users.bin"));
-		for(User user:users){
+		//aleatorio.deleteUser(3);
+		//aleatorio.modifyUser(usuario);
+		//aleatorio.addCredit(1, 10);
+		//aleatorio.removeCredit(1, 40);
+		aleatorio.getUser(2);
+		//ArrayList<User> users = aleatorio.getAllUsers(Paths.get("res/users.bin"));
+		/*for(User user:users){
 			System.out.println(user);
-		}
+		}*/
 	}
 
 }

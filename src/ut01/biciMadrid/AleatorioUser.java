@@ -25,6 +25,7 @@ public class AleatorioUser implements InterfaceRandomUser {
 	final static int TAM_LAST_NAME = 20;
 	final static int TAM_DNI = 9;
 	final static int TAM_ADDRESS = 40;
+	final static int POSICION_CREDIT = 183;
 	
 	
 	
@@ -66,17 +67,102 @@ public class AleatorioUser implements InterfaceRandomUser {
 	}
 
 	
-	public User getUser(String dni) {
-		Path path = Paths.get("res/users.csv");
-		return getUser(dni, path);
+	
+	public User getUser(int key){
+		Path path = Paths.get("res/users.bin");
+		try (RandomAccessFile raf = new RandomAccessFile(path.toFile(), "r")) {
+			System.out.println("*** raf.getFilePointer()= "+raf.getFilePointer()+" raf.length()= "+raf.length());
+			return getUser(key, path, raf);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
-
 	
 	@Override
-	public User getUser(String dni, Path userRandomFile) {
-		// TODO Auto-generated method stub
+	public User getUser(int key, Path userRandomFile, RandomAccessFile raf ) throws IOException {
+		User user = new User();
+		boolean subscrib;
+		double credit;
+		long position=0;
+		char name[] = new char[TAM_NAME], auxName, lastname[]= new char[TAM_LAST_NAME], auxLastName, dni[]=new char[TAM_DNI]
+				, auxDni, address[] = new char[TAM_ADDRESS], auxAddress;
+		
+				if(key>-1){
+				position = (key - 1) * RECORD_USER;
+				
+				}
+				else if(key==-1){
+					position=raf.getFilePointer();
+				}
+				else{
+					System.out.println("Posicion no valida, te muestro el primer usuario");
+				}
+				raf.seek(position);
+				key= raf.readInt();//Leemos key
+				
+				for(int i=0; i<TAM_NAME;i++){//leemos nombre
+					auxName = raf.readChar(); 
+					if((int) auxName !=0){
+						name[i]=auxName;
+					}
+					else{
+						name[i] =' ';
+					}
+				}
+				String nameS = new String(name);
+				
+				for(int i=0; i<TAM_LAST_NAME;i++){//leemos apellido
+					auxLastName = raf.readChar(); 
+					if((int) auxLastName !=0){
+						lastname[i]=auxLastName;
+					}
+					else{
+						lastname[i] =' ';
+					}
+				}
+				String lastnameS = new String(lastname);
+				
+				for(int i=0; i<TAM_DNI;i++){//leemos dni
+					auxDni = raf.readChar(); 
+					if((int) auxDni !=0){
+						dni[i]=auxDni;
+					}
+					else{
+						dni[i] =' ';
+					}
+				}
+				String dniS = new String(dni);
+				
+				subscrib= raf.readBoolean();//leemos subscripción
+				
+				for(int i=0; i<TAM_ADDRESS;i++){//leemos dirección
+					auxAddress = raf.readChar(); 
+					if((int) auxAddress !=0){
+						address[i]=auxAddress;
+					}
+					else{
+						address[i] =' ';
+					}
+				}
+				String addressS = new String(address);
+				
+				credit= raf.readDouble();
+				
+				user = new User(key, nameS, lastnameS, dniS, subscrib, addressS, credit);
+				
+				System.out.println(user);
+				//System.out.println("raf.getFilePointer()= "+raf.getFilePointer()+" raf.length()= "+raf.length());
+			
 
-		return null;
+		return user;	
+		
 	}
 
 	@Override
@@ -150,23 +236,83 @@ public class AleatorioUser implements InterfaceRandomUser {
 		}
 		
 	}
-
+	
+	public void modifyUser(User user) {
+		Path path = Paths.get("res/users.bin");
+		modifyUser(user,path );
+	}
+	
 	@Override
-	public User modifyUser(String dni, Path userRandomFile) {
-		// TODO Auto-generated method stub
-		return null;
+	public void modifyUser(User user, Path userRandomFile) {
+		try (RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "rw")) {
+			int position = (user.getKey() - 1) * RECORD_USER;
+			raf.seek(position);
+			writeUserRecord(raf, user);
+			
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				System.err.println("FileNotFound");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.err.println("No puedes borrar esa linea");
+			}
+			
 	}
 
+	
+	public void addCredit(int key, double credit) {
+		Path path = Paths.get("res/users.bin");
+		addCredit(key, credit, path);
+	}
+	
 	@Override
-	public User addCredit(String dni, double credit, Path userRandomFile) {
+	public void addCredit(int key, double credit, Path userRandomFile) {
 		// TODO Auto-generated method stub
-		return null;
+		double getcredit=0, newcredit=0;
+		try (RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "rw")) {
+			int position = ((key - 1) * RECORD_USER) + POSICION_CREDIT;
+			raf.seek(position);
+			getcredit= raf.readDouble();
+			newcredit = getcredit + credit;
+			raf.seek(position);
+			raf.writeDouble(newcredit);
+			
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				System.err.println("FileNotFound");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.err.println("No puedes borrar esa linea");
+			}
 	}
 
-	@Override
-	public User removeCredit(String dni, double credit, Path userRandomFile) {
+	
+	
+	public void removeCredit(int key, double credit) {
 		// TODO Auto-generated method stub
-		return null;
+		Path path = Paths.get("res/users.bin");
+		removeCredit(key, credit, path);
+	}
+	
+	@Override
+	public void removeCredit(int key, double credit, Path userRandomFile) {
+		// TODO Auto-generated method stub
+		double getcredit=0, newcredit=0;
+		try (RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "rw")) {
+			int position = ((key - 1) * RECORD_USER) + POSICION_CREDIT;
+			raf.seek(position);
+			getcredit= raf.readDouble();
+			newcredit = getcredit - credit;
+			raf.seek(position);
+			raf.writeDouble(newcredit);
+			
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				System.err.println("FileNotFound");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.err.println("No puedes borrar esa linea");
+			}
 	}
 	
 	@Override
@@ -182,60 +328,9 @@ public class AleatorioUser implements InterfaceRandomUser {
 		
 		try (RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "r")) {
 			do{
-				key= raf.readInt();//Leemos key
-				
-				for(int i=0; i<TAM_NAME;i++){//leemos nombre
-					auxName = raf.readChar(); 
-					if((int) auxName !=0){
-						name[i]=auxName;
-					}
-					else{
-						name[i] =' ';
-					}
-				}
-				String nameS = new String(name);
-				
-				for(int i=0; i<TAM_LAST_NAME;i++){//leemos apellido
-					auxLastName = raf.readChar(); 
-					if((int) auxLastName !=0){
-						lastname[i]=auxLastName;
-					}
-					else{
-						lastname[i] =' ';
-					}
-				}
-				String lastnameS = new String(lastname);
-				
-				for(int i=0; i<TAM_DNI;i++){//leemos dni
-					auxDni = raf.readChar(); 
-					if((int) auxDni !=0){
-						dni[i]=auxDni;
-					}
-					else{
-						dni[i] =' ';
-					}
-				}
-				String dniS = new String(dni);
-				
-				subscrib= raf.readBoolean();//leemos subscripción
-				
-				for(int i=0; i<TAM_ADDRESS;i++){//leemos dirección
-					auxAddress = raf.readChar(); 
-					if((int) auxAddress !=0){
-						address[i]=auxAddress;
-					}
-					else{
-						address[i] =' ';
-					}
-				}
-				String addressS = new String(address);
-				
-				credit= raf.readDouble();
-				
-				User user = new User(key, nameS, lastnameS, dniS, subscrib, addressS, credit);
+				User user=getUser(-1, userRandomFile, raf);
 				users.add(user);
-				
-				//System.out.println("raf.getFilePointer()= "+raf.getFilePointer()+" raf.length()= "+raf.length());
+				System.out.println("raf.getFilePointer()= "+raf.getFilePointer()+" raf.length()= "+raf.length());
 			}
 			
 			while (raf.getFilePointer() < raf.length());
