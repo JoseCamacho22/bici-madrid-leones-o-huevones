@@ -34,11 +34,23 @@ public class Main {
 	public static void main(String[] args) {
 		
 		
-		Bike_Random bike_Random = new Bike_Random ();
-		bike_Random.loadBikeCSV(Paths.get("res/bike.csv"),
+		Bike_Random aleatorio = new Bike_Random ();
+		aleatorio.loadBikeCSV(Paths.get("res/bike.csv"),
 				Paths.get("res/bike.bin"));
 		
-		ArrayList<Bike> bicis = bike_Random.getAllBikes(Paths.get("res/bike.bin"));
+		/*Este es el metodo de borrar*/
+		//aleatorio.deleteBike(3);
+		//ArrayList<Bike> bicis = aleatorio.getAllBikes(Paths.get("res/bike.bin"));
+		
+		//Metodo de modificicar
+		//aleatorio.modifyBike(3);
+		//ArrayList<Bike> bicis = aleatorio.getAllBikes(Paths.get("res/bike.bin"));
+		
+		//Metodo obtener bici
+		//aleatorio.getBike(2,Paths.get("res/bike.bin"));
+		
+		
+		ArrayList<Bike> bicis = aleatorio.getAllBikes(Paths.get("res/bike.bin"));
 		
 		for(Bike bici:bicis){
 			System.out.println(bici);

@@ -13,7 +13,7 @@ public interface InterfaceRandomBike {
 	
 	public void saveBike(Bike bici, Path bikeRandomFile);
 	
-	public Bike deleteBike(int key, Path bikeRandomFile);
+	public void deleteBike(int key, Path bikeRandomFile);
 
 	public Bike modifyBike(Bike bici, Path bikeRandomFile);
 	

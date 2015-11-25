@@ -6,17 +6,27 @@ public class User implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private int key;
-    private String name; // 20 characters Max
-    private String last_name; // 20 characters Max
-    private String dni;
-    private boolean subscriber; // si está abonado
-    private String address; // 40 characters Max
-    private double credit; //saldo
+	private int key; //4b
+    private String name; // 20 characters Max 40b 
+    private String last_name; // 20 characters Max 40b
+    private String dni; // 9 characters 18b
+    private boolean subscriber; // si está abonado 1b
+    private String address; // 40 characters Max 80b
+    private double credit; //saldo 8b
     
     User(){
     	
     }
+
+	public User(int key, String name, String last_name, String dni, boolean subscriber, String address, double credit) {
+		this.key = key;
+		this.name = name;
+		this.last_name = last_name;
+		this.dni = dni;
+		this.subscriber = subscriber;
+		this.address = address;
+		this.credit = credit;
+	}
 
 	public int getKey() {
 		return key;
@@ -74,5 +84,9 @@ public class User implements Serializable{
 		this.credit = credit;
 	}
     
-    
+	@Override
+	public String toString() {
+		return "User [key=" + key + ", name=" + name.replaceAll("\\s+", " ").trim() + ", lastname= " + last_name.replaceAll("\\s+", " ").trim() + ", dni= " + dni + ", subscriber= " 
+	+subscriber+ ", address= " +address.replaceAll("\\s+", " ").trim()+ ", credit= " +credit+".]";
+	}
 }

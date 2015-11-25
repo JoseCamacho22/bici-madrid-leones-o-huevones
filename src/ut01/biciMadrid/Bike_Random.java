@@ -9,6 +9,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.stream.Stream;
+
+/**
+* 
+*authors
+* Miguel Ángel García, José Augusto Camacho, Iván Sánchez Gómez 
+*
+*/
 
 public class Bike_Random implements InterfaceRandomBike {
 
@@ -48,7 +56,7 @@ public class Bike_Random implements InterfaceRandomBike {
 			bike = new Bike(Integer.parseInt(fields[0]), Boolean.parseBoolean(fields[1]),
 					Boolean.parseBoolean(fields[2]), Integer.parseInt(fields[3]));
 		} catch (NumberFormatException e) {
-			System.err.println();
+			System.err.println("");
 
 		}
 		return bike;
@@ -57,9 +65,51 @@ public class Bike_Random implements InterfaceRandomBike {
 	
 	@Override
 	public Bike getBike(int key, Path bikeRandomFile) {
-		// TODO Auto-generated method stub
-		return null;
+		RandomAccessFile streamIn = null;
+		Bike bici = new Bike(2, true, false, 4);
+
+		try {
+			streamIn = new RandomAccessFile(bikeRandomFile.toFile(), "r");
+																																					
+			int position = (key-1) * RECORD_BIKE; 
+			streamIn.seek(position);
+			if (position < streamIn.length()) {												
+				leerRegistro(streamIn);
+			}
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+
+		} finally {
+			if (streamIn != null)
+				try {
+					streamIn.close();
+				} catch (IOException e) {
+				}
+		}
+
+		return bici;
+		
 	}
+	
+	private Bike leerRegistro(RandomAccessFile streamIn) throws IOException {
+		
+		// TODO Apéndice de método generado automáticamente
+
+		int id;
+		boolean activa;
+		boolean alquilada;
+		int idTotem;
+
+		id = streamIn.readInt();
+		activa = streamIn.readBoolean();
+		alquilada = streamIn.readBoolean();
+		idTotem = streamIn.readInt();
+
+		Bike bici = new Bike(id, activa, alquilada, idTotem);
+
+		return bici;
+	}
+
 
 	@Override
 	public void saveBike(Bike bici, Path bikeRandomFile) {
@@ -93,18 +143,59 @@ public class Bike_Random implements InterfaceRandomBike {
 	}
 
 	@Override
-	public Bike deleteBike(int key, Path bikeRandomFile) {
+	public void deleteBike(int key, Path bikeRandomFile) {
 		// TODO Auto-generated method stub
-		
-		
-		return null;
+		RandomAccessFile streamOut=null;
+		int position = (key-1) * Bike_Random.RECORD_BIKE;
+		try{
+			streamOut=new RandomAccessFile(bikeRandomFile.toFile(),"rw");
+			streamOut.seek(position);
+			Bike biciElim = new Bike(0, false, false, 0);
+			writeBikeRecord(streamOut, biciElim);
+
+		} catch (FileNotFoundException e) {
+			} catch (IOException e) {
+
+	} finally {
+		if (streamOut != null)
+			try {
+				streamOut.close();
+			} catch (IOException e) {
+				
+			}
+	}
+
+}
+	
+	public void modifyBike(int key){
+		Path path = Paths.get("res/bike.bin");
+		Bike biciModifica=new Bike(3,true,false,15); 
+		modifyBike(biciModifica,path);
+	
 		
 	}
+
 
 	@Override
 	public Bike modifyBike(Bike bici, Path bikeRandomFile) {
 		// TODO Auto-generated method stub
-		return null;
+		RandomAccessFile streamOut=null;
+		try{
+			streamOut=new RandomAccessFile(bikeRandomFile.toFile(),"rw");
+			int posicion=bici.getKey()-1*RECORD_BIKE;//cojes posicion incial para qu luego en el main la indiquemos
+			try {
+				streamOut.seek(posicion);//indica la posicion que le pasaremos en el main
+				writeBikeRecord(streamOut, bici);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}catch(FileNotFoundException e){
+			System.err.println("Fichero no encontrado");
+		}
+		
+		
+		return bici;
 	}
 
 	@Override
