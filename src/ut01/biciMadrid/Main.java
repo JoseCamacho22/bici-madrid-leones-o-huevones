@@ -70,7 +70,7 @@ public class Main {
 		aleatorio.addCredit(1, 10);
 		
 		//Quitar credito(id usuario, credito a restar)
-		aleatorio.removeCredit(1, 5);
+		aleatorio.removeCredit(2, 5);
 		
 		//Devuelve un objeto del tipo usuario
 		User userid = aleatorio.getUser(2);
