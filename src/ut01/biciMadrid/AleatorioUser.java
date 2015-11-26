@@ -26,25 +26,20 @@ public class AleatorioUser implements InterfaceRandomUser {
 	final static int TAM_DNI = 9;
 	final static int TAM_ADDRESS = 40;
 	final static int POSICION_CREDIT = 183;
+	final static Path path_csv = Paths.get("res/users.csv");
+	final static Path userRandomFile = Paths.get("res/users.bin");
 	
-	
-	
-	public void loadUserCSV(Path userRandomFile) {
-		Path path = Paths.get("res/users.csv");
-		loadUserCSV(path, userRandomFile);
-	}
 
-	
 	@Override
-	public void loadUserCSV(Path csvUserFile, Path userRandomFile) {
+	public void loadUserCSV() {
 		// TODO Auto-generated method stub
 		String line;
-		try (BufferedReader br = Files.newBufferedReader(csvUserFile, Charset.forName("UTF-8"))) {
+		try (BufferedReader br = Files.newBufferedReader(path_csv, Charset.forName("UTF-8"))) {
 			while ((line = br.readLine()) != null) {
 				String[] fields = line.split(";");
 				User user = getUser(fields);
 				if (user.getKey() > 0)// comprobamos que es un usuario válido
-					saveUser(user, userRandomFile);
+					saveUser(user);
 			}
 
 		} catch (IOException e) {
@@ -67,12 +62,10 @@ public class AleatorioUser implements InterfaceRandomUser {
 	}
 
 	
-	
+	@Override
 	public User getUser(int key){
-		Path path = Paths.get("res/users.bin");
-		try (RandomAccessFile raf = new RandomAccessFile(path.toFile(), "r")) {
-			System.out.println("*** raf.getFilePointer()= "+raf.getFilePointer()+" raf.length()= "+raf.length());
-			return getUser(key, path, raf);
+		try (RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "r")) {
+			return getUser(key, raf);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -85,8 +78,8 @@ public class AleatorioUser implements InterfaceRandomUser {
 		
 	}
 	
-	@Override
-	public User getUser(int key, Path userRandomFile, RandomAccessFile raf ) throws IOException {
+	
+	private User getUser(int key, RandomAccessFile raf ) throws IOException {
 		User user = new User();
 		boolean subscrib;
 		double credit;
@@ -156,9 +149,6 @@ public class AleatorioUser implements InterfaceRandomUser {
 				credit= raf.readDouble();
 				
 				user = new User(key, nameS, lastnameS, dniS, subscrib, addressS, credit);
-				
-				System.out.println(user);
-				//System.out.println("raf.getFilePointer()= "+raf.getFilePointer()+" raf.length()= "+raf.length());
 			
 
 		return user;	
@@ -166,7 +156,7 @@ public class AleatorioUser implements InterfaceRandomUser {
 	}
 
 	@Override
-	public void saveUser(User user, Path userRandomFile) {
+	public void saveUser(User user) {
 		// TODO Auto-generated method stub
 		int position = 0;
 		try (RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "rw")) {
@@ -188,7 +178,7 @@ public class AleatorioUser implements InterfaceRandomUser {
 	}
 	
 		
-	public void writeUserRecord(RandomAccessFile raf, User user) throws IOException {
+	private void writeUserRecord(RandomAccessFile raf, User user) throws IOException {
 		// TODO Auto-generated method stub
 			raf.writeInt(user.getKey());//escribimos key
 			
@@ -213,13 +203,9 @@ public class AleatorioUser implements InterfaceRandomUser {
 			raf.writeDouble(user.getCredit());//escribimos credit
 		
 	}
-	public void deleteUser(int key) {
-		Path path = Paths.get("res/users.bin");
-		deleteUser(key, path);
-		
-	}
 	
-	public void deleteUser(int key, Path userRandomFile) {
+	@Override
+	public void deleteUser(int key) {
 		
 		try (RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "rw")) {
 		int position = (key - 1) * RECORD_USER;
@@ -237,13 +223,9 @@ public class AleatorioUser implements InterfaceRandomUser {
 		
 	}
 	
-	public void modifyUser(User user) {
-		Path path = Paths.get("res/users.bin");
-		modifyUser(user,path );
-	}
-	
+
 	@Override
-	public void modifyUser(User user, Path userRandomFile) {
+	public void modifyUser(User user) {
 		try (RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "rw")) {
 			int position = (user.getKey() - 1) * RECORD_USER;
 			raf.seek(position);
@@ -260,13 +242,8 @@ public class AleatorioUser implements InterfaceRandomUser {
 	}
 
 	
-	public void addCredit(int key, double credit) {
-		Path path = Paths.get("res/users.bin");
-		addCredit(key, credit, path);
-	}
-	
 	@Override
-	public void addCredit(int key, double credit, Path userRandomFile) {
+	public void addCredit(int key, double credit) {
 		// TODO Auto-generated method stub
 		double getcredit=0, newcredit=0;
 		try (RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "rw")) {
@@ -286,16 +263,8 @@ public class AleatorioUser implements InterfaceRandomUser {
 			}
 	}
 
-	
-	
-	public void removeCredit(int key, double credit) {
-		// TODO Auto-generated method stub
-		Path path = Paths.get("res/users.bin");
-		removeCredit(key, credit, path);
-	}
-	
 	@Override
-	public void removeCredit(int key, double credit, Path userRandomFile) {
+	public void removeCredit(int key, double credit) {
 		// TODO Auto-generated method stub
 		double getcredit=0, newcredit=0;
 		try (RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "rw")) {
@@ -316,21 +285,14 @@ public class AleatorioUser implements InterfaceRandomUser {
 	}
 	
 	@Override
-	public ArrayList<User> getAllUsers(Path userRandomFile){
+	public ArrayList<User> getAllUsers(){
 		// TODO Auto-generated method stub
 		ArrayList<User> users = new ArrayList<>();
-		int key;
-		boolean subscrib;
-		double credit;
-		char name[] = new char[TAM_NAME], auxName, lastname[]= new char[TAM_LAST_NAME], auxLastName, dni[]=new char[TAM_DNI]
-				, auxDni, address[] = new char[TAM_ADDRESS], auxAddress;
-		
 		
 		try (RandomAccessFile raf = new RandomAccessFile(userRandomFile.toFile(), "r")) {
 			do{
-				User user=getUser(-1, userRandomFile, raf);
+				User user=getUser(-1, raf);
 				users.add(user);
-				System.out.println("raf.getFilePointer()= "+raf.getFilePointer()+" raf.length()= "+raf.length());
 			}
 			
 			while (raf.getFilePointer() < raf.length());
