@@ -3,7 +3,7 @@ package ut01.biciMadrid;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-public interface InterfaceSerializable {
+public interface InterfaceSerializable{
 
 	void addOrder(Order order, Path serializableFile);
 	
