@@ -58,6 +58,26 @@ public class Main {
 			}
 		}*/
 		ArrayList<Bike> bicis = aleatorio.getAllBikes(Paths.get("res/bike.bin"));
+		for(Bike bici:bicis){
+			System.out.println(bici.toString());
+		}
+	
+		//int userKey, int bikeKey, double totalCost, String startTotem, String endTotem, String startTime,
+		//String endTime
+		Order order = new Order(1,2,20.0,"19febrero","3 de enero","4marzo","2enero");
+	/*	order.setBikeKey(1);
+		order.setUserKey(2);
+		order.setTotalCost(20.0);
+		order.setEndTime("2 de enero");
+		order.setEndTotem("3 de enero");
+		order.setStartTime("4 marzo");
+		order.setStartTotem("19 febrero");*/
+		
+		
+		SerializableBike sb = new SerializableBike();
+		
+		sb.addOrder(order, Paths.get("res/Serializable.bin"));
+		
 	}
 
 }

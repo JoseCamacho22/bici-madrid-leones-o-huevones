@@ -104,7 +104,7 @@ public class BikeRandom implements InterfaceRandomBike {
 			boolean activa;
 			boolean alquilada;
 			int idTotem;
-
+			
 			id = streamIn.readInt();
 			activa = streamIn.readBoolean();
 			alquilada = streamIn.readBoolean();
@@ -247,6 +247,9 @@ public class BikeRandom implements InterfaceRandomBike {
 
 		return bicis;
 	}
+	
+	
+	
 
 	
 }

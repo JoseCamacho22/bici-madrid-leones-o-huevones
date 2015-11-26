@@ -14,12 +14,25 @@ public class Order implements Serializable {
 	private double totalCost;
 	private String startTotem;
 	private String endTotem;
-	private Date startTime;
-	private Date endTime;
+	private String startTime;
+	private String endTime;
 	
 	Order(){
 		
 	}
+	
+	public Order(int userKey, int bikeKey, double totalCost, String startTotem, String endTotem, String startTime,
+			String endTime) {
+		super();
+		this.userKey = userKey;
+		this.bikeKey = bikeKey;
+		this.totalCost = totalCost;
+		this.startTotem = startTotem;
+		this.endTotem = endTotem;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
+
 	public int getUserKey() {
 		return userKey;
 	}
@@ -50,17 +63,23 @@ public class Order implements Serializable {
 	public void setEndTotem(String endTotem) {
 		this.endTotem = endTotem;
 	}
-	public Date getStartTime() {
+	public String getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(Date startTime) {
+	public void setStartTime(String startTime) {
 		this.startTime = startTime;
 	}
-	public Date getEndTime() {
+	public String getEndTime() {
 		return endTime;
 	}
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
+	public void setEndTime(String Endtime) {
+		this.endTime = Endtime;
+	}
+
+	@Override
+	public String toString() {
+		return "Order [userKey=" + userKey + ", bikeKey=" + bikeKey + ", totalCost=" + totalCost + ", startTotem="
+				+ startTotem + ", endTotem=" + endTotem + ", startTime=" + startTime + ", endTime=" + endTime + "]";
 	}
 	
 	
