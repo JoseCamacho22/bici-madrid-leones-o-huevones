@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+
 
 import java.nio.file.Path;
 
@@ -52,76 +55,7 @@ public class Main {
 		-Una vez iniciado Users.bin podemos comentar el metodo loadUserCSV y probar todos los metodos de lectura y escritura del fichero aleatorio
 		*/
 		
-		//Creacion del objeto para lanzar los metodos
-		AleatorioUser aleatorioUser = new AleatorioUser();
-		
-		//Inicia Fichero aleatorio con los datos de "res/Users.csv
-		aleatorioUser.loadUserCSV();
-		
-
-		/*Creación de usuario para insertarlo en la 
-		posicion 7 del fichero aleatorio, cambiar primer campo para insertarlo en otra posicon*/
-		User usuario = new User(7, "Fulanito", "Apellido","12345678q", true, "calle de prueba", 10);
-		
-		//Insertar usuario
-		aleatorioUser.saveUser(usuario);
-		
-		//Borrar usuario por id
-		aleatorioUser.deleteUser(3);
-		
-		/*Modificar usuario completo, tener en cuanto que es simplemente un metodo de sobre-escritura, importante 
-		respetar el id del usuario a modificar*/
-		aleatorioUser.modifyUser(usuario);
-		
-		//Añadir credito (id usuario, credito a añadir)
-		aleatorioUser.addCredit(1, 10);
-		
-		//Quitar credito(id usuario, credito a restar)
-		aleatorioUser.removeCredit(2, 5);
-		
-		//Devuelve un objeto del tipo usuario
-		User userid = aleatorioUser.getUser(2);
-		
-		//Lista el usuario obtenido en el metodo getUser
-		System.out.println(userid);
-		
-		//Devuelve un arraylist de todos los usuarios
-		ArrayList<User> users = aleatorioUser.getAllUsers();
-		
-		// Lista todos los usarios devuelto con el metodo aleatorio.getAllUsers();
-		for(User user:users){
-			System.out.println(user);
-		}
-		
-		
-		//METODOS BIKE 
-		
-		BikeRandom aleatorioBike = new BikeRandom();
-		aleatorioBike.loadBikeCSV(Paths.get("res/bike.csv"),Paths.get("res/bike.bin"));
-		
-		/*Este es el metodo de borrar*/
-		aleatorioBike.deleteBike(3);
-		
-		
-		//Metodo de modificicar
-		aleatorioBike.modifyBike(3);
-		ArrayList<Bike> bicis = aleatorioBike.getAllBikes(Paths.get("res/bike.bin"));
-		
-		//Metodo obtener bici
-		aleatorioBike.getBike(2,Paths.get("res/bike.bin"));
-		
-		for(Bike bici:bicis){			
-			if(bici.getKey()==(2)){
-			System.out.println(bici.toString());
-			}
-		}
-		
-		for(Bike bici:bicis){
-			System.out.println(bici.toString());
-		}
-	
-		//Order constructor (int userKey, int bikeKey, double totalCost, String startTotem, String endTotem, String startTime)
-		//String endTime
+		//Serializable
 		Order order = new Order(1,2,20.0,"19febrero","3 de enero","4marzo","2enero");
 		order.setBikeKey(1);
 		order.setUserKey(2);
@@ -136,6 +70,107 @@ public class Main {
 		
 		sb.addOrder(order, Paths.get("res/Serializable.bin"));
 		
+		
+		//Aleatorio
+		AleatorioUser aleatorioUser = new AleatorioUser();
+		BikeRandom aleatorioBike = new BikeRandom();
+		
+	
+		//Variables para usar el menu
+		int id_user=7, id_borrado=3,id_creditadd=1,id_creditremove=1, id_bici=1,id_borrado_bici=3,id_modificado_bici=3;
+		double creditadd=10, creditremove=5;
+		
+		//Usuario para modificar cambiar id_user segun el usuario
+		User usuario = new User(id_user, "Fulanito", "Apellido","12345678q", true, "calle de prueba", 10);
+		
+		int opc = 0;
+		Scanner in = new Scanner(System.in);
+		while (true) {
+			System.out.println("\nMenu Gestion Usuarios\n");
+			System.out.println("1.Cargar Fichero Usuarios Acceso Aleatorio desde 'res/users.csv'\n"
+					+ "2.Insertar usuario\n"
+					+ "3.Borrar usuario\n"
+					+ "4.Modificar usuario\n"
+					+ "5.Añadir credito\n"
+					+ "6.Quitar credito\n"
+					+ "7.Mostrar un usuario\n"
+					+ "8.Mostrar todos los usuarios\n"
+					+ "\nMenu Gestion Bicis\n\n"
+					+ "9.Cargar Fichero Bicis Acceso Aleatorio desde 'res/bike.csv'\n"
+					+ "10.Borrar bici\n"
+					+ "11.Modificar bici\n"
+					+ "12.Mostrar una bici\n"
+					+ "13.Mostar todas las bicis\n"
+					+ "14.Salir\n");
+			
+			opc = in.nextInt();
+			switch (opc) {
+			case 1:
+				aleatorioUser.loadUserCSV();
+				System.out.println("Fichero usuarios iniciado");
+				break;
+			case 2:
+				aleatorioUser.saveUser(usuario);
+				System.out.println("Guardado usuario "+usuario.toString());
+				break;
+			case 3:
+				aleatorioUser.deleteUser(id_borrado);
+				System.out.println("Borrado usuario "+id_borrado);
+				break;
+			case 4:
+				aleatorioUser.modifyUser(usuario);
+				System.out.println("Modificado usuario "+usuario.toString());
+				break;
+			case 5:
+				aleatorioUser.addCredit(id_creditadd, creditadd);
+				System.out.println("Añadido "+creditadd+"€ al usuario id="+id_creditadd);
+				break;
+			case 6:
+				aleatorioUser.removeCredit(id_creditremove, creditremove);
+				System.out.println("Añadido "+creditremove+"€ al usuario id="+id_creditremove);
+				break;
+			case 7:
+				User userid = aleatorioUser.getUser(2);
+				//Lista el usuario obtenido en el metodo getUser
+				System.out.println(userid);
+				break;
+			case 8:
+				ArrayList<User> users = aleatorioUser.getAllUsers();
+				// Lista todos los usarios devuelto con el metodo aleatorio.getAllUsers();
+				for(User user:users){
+					System.out.println(user);
+				}
+				break;
+			case 9:
+				aleatorioBike.loadBikeCSV(Paths.get("res/bike.csv"),Paths.get("res/bike.bin"));
+				System.out.println("Fichero bicis iniciado");
+				break;
+			case 10:
+				aleatorioBike.deleteBike(id_borrado_bici);
+				System.out.println("Borrada bici "+id_borrado);
+				break;
+			case 11:
+				aleatorioBike.modifyBike(id_modificado_bici);
+				System.out.println("Modificada bici "+id_modificado_bici);
+				break;
+			case 12:
+				Bike bici_id= aleatorioBike.getBike(id_bici,Paths.get("res/bike.bin"));
+				System.out.println(bici_id.toString());
+				break;
+			case 13:
+				ArrayList<Bike> bicis = aleatorioBike.getAllBikes(Paths.get("res/bike.bin"));
+				for(Bike bici:bicis){
+					System.out.println(bici.toString());
+				}
+				break;
+			case 14:
+				System.exit(0);
+				break;
+			default:
+				break;
+			}
+		}
+	
 	}
 
 }
